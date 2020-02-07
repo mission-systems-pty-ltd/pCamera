@@ -28,6 +28,7 @@ class Camera : public CMOOSApp
    void RegisterVariables();
 
    cv::Mat m_image;
+   std::string msg_name;
 
  private: // Configuration variables
 

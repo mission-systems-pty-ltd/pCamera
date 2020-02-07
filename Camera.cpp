@@ -19,6 +19,7 @@ using json = nlohmann::json;
 
 Camera::Camera()
 {
+  msg_name = "No camera set!";
 }
 
 //---------------------------------------------------------
@@ -42,7 +43,7 @@ bool Camera::OnNewMail(MOOSMSG_LIST &NewMail)
     string sval = msg.GetString();
 
     // Process camera message
-    if (key == "CAMERA_DATA") {
+    if (key == msg_name) {
 
       size_t numBytes = msg.GetBinaryDataSize();
 
@@ -54,20 +55,6 @@ bool Camera::OnNewMail(MOOSMSG_LIST &NewMail)
 
       // Convert to BGRA
       cvtColor(raw, m_image, COLOR_RGBA2BGRA);
-
-      // Read BGR image
-      // Mat raw = Mat(720, 1280, CV_8UC3, ptr);
-      // Mat raw = Mat(480, 640, CV_8UC3, ptr);
-      // Mat raw = Mat(240, 424, CV_8UC3, ptr);
-
-      // Convert to BGRA
-      // cvtColor(raw, m_image, COLOR_BGR2BGRA);
-
-      // Read Z16 image
-      // Mat raw = Mat(720, 1280, CV_16UC1, ptr);
-
-      // // Convert to BGRA
-      // cvtColor(raw, m_image, COLOR_GRAY2BGR);
     } 
   }
    return(true);
@@ -96,7 +83,7 @@ bool Camera::Iterate()
 
   if ( m_image.data )
   {
-    imshow("Colour Landing Camera", m_image);
+    imshow(msg_name, m_image);
     waitKey(1);
   }
 
@@ -118,7 +105,8 @@ bool Camera::OnStartUp()
       string param = stripBlankEnds(toupper(biteString(*p, '=')));
       string value = stripBlankEnds(*p);
       
-      if(param == "FOO") {
+      if(param == "MSG_NAME") {
+        msg_name = value;
         //handled
       }
       else if(param == "BAR") {
@@ -129,7 +117,7 @@ bool Camera::OnStartUp()
   
   RegisterVariables();	
 
-  namedWindow("Colour Landing Camera", WINDOW_AUTOSIZE );
+  namedWindow(msg_name, WINDOW_AUTOSIZE );
 
   return(true);
 }
@@ -139,6 +127,6 @@ bool Camera::OnStartUp()
 
 void Camera::RegisterVariables()
 {  
-  Register("CAMERA_DATA", 0);
+  Register(msg_name, 0);
 }
 
