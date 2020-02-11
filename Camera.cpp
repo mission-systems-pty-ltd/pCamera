@@ -36,13 +36,12 @@ bool Camera::OnNewMail(MOOSMSG_LIST &NewMail)
 {
   MOOSMSG_LIST::iterator p;
    
-  for(p=NewMail.begin(); p!=NewMail.end(); p++) {
+  for (p=NewMail.begin(); p!=NewMail.end(); p++) {
     CMOOSMsg &msg = *p;
     string key  = msg.GetKey();
     double dval = msg.GetDouble();
     string sval = msg.GetString();
-
-    // Process camera message
+    
     if (key == msg_name) {
 
       size_t numBytes = msg.GetBinaryDataSize();
@@ -65,13 +64,14 @@ bool Camera::OnNewMail(MOOSMSG_LIST &NewMail)
 
 bool Camera::OnConnectToServer()
 {
-   // register for variables here
-   // possibly look at the mission file?
-   // m_MissionReader.GetConfigurationParam("Name", <string>);
-   // m_Comms.Register("VARNAME", 0);
+    // register for variables here
+    // possibly look at the mission file?
+    // m_MissionReader.GetConfigurationParam("Name", <string>);
+    // m_Comms.Register("VARNAME", 0);
 	
-   RegisterVariables();
-   return(true);
+    // Don't do this here!
+    // RegisterVariables();
+    return(true);
 }
 
 //---------------------------------------------------------
@@ -107,15 +107,13 @@ bool Camera::OnStartUp()
       
       if(param == "MSG_NAME") {
         msg_name = value;
-        //handled
-      }
-      else if(param == "BAR") {
-        //handled
+        Register(msg_name, 0);
       }
     }
   }
   
-  RegisterVariables();	
+  // Don't do this here!
+  // RegisterVariables();
 
   namedWindow(msg_name, WINDOW_AUTOSIZE );
 
