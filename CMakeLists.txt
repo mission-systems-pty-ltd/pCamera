@@ -3,6 +3,7 @@
 # Author(s): David Battle, Mission Systems Pty Ltd
 #--------------------------------------------------------
 cmake_minimum_required(VERSION 3.5)
+project(pCamera)
 
 set(EXEC_NAME pCamera)
 
